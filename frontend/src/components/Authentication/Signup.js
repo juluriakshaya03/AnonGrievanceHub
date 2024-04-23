@@ -5,7 +5,7 @@ import { VStack } from "@chakra-ui/layout";
 import { useToast } from "@chakra-ui/toast";
 import axios from "axios";
 import { useState } from "react";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 
 const Signup = () => {
   const [show, setShow] = useState(false);
@@ -17,11 +17,11 @@ const Signup = () => {
   const [email, setEmail] = useState();
   const [confirmpassword, setConfirmpassword] = useState();
   const [password, setPassword] = useState();
-  const [pic, setPic] = useState();
-  const [picLoading, setPicLoading] = useState(false);
+ // const [pic, setPic] = useState();
+//  const [picLoading, setPicLoading] = useState(false);
 
   const submitHandler = async () => {
-    setPicLoading(true);
+   // setPicLoading(true);
     if (!name || !email || !password || !confirmpassword) {
       toast({
         title: "Please Fill all the Feilds",
@@ -30,7 +30,7 @@ const Signup = () => {
         isClosable: true,
         position: "bottom",
       });
-      setPicLoading(false);
+     // setPicLoading(false);
       return;
     }
     if (password !== confirmpassword) {
@@ -43,20 +43,23 @@ const Signup = () => {
       });
       return;
     }
-    console.log(name, email, password, pic);
+    console.log(name, email, password/*, pic*/);
+    console.log(name);
     try {
+       console.log(name);
       const config = {
         headers: {
           "Content-type": "application/json",
         },
       };
+       console.log(config);
       const { data } = await axios.post(
         "/api/user",
         {
           name,
           email,
           password,
-          pic,
+         /* pic,*/
         },
         config
       );
@@ -69,7 +72,7 @@ const Signup = () => {
         position: "bottom",
       });
       localStorage.setItem("userInfo", JSON.stringify(data));
-      setPicLoading(false);
+      //setPicLoading(false);
       history.push("/chats");
     } catch (error) {
       toast({
@@ -80,12 +83,12 @@ const Signup = () => {
         isClosable: true,
         position: "bottom",
       });
-      setPicLoading(false);
+   //   setPicLoading(false);
     }
   };
 
-  const postDetails = (pics) => {
-    setPicLoading(true);
+ /* const postDetails = (pics) => {
+   // setPicLoading(true);
     if (pics === undefined) {
       toast({
         title: "Please Select an Image!",
@@ -110,11 +113,11 @@ const Signup = () => {
         .then((data) => {
           setPic(data.url.toString());
           console.log(data.url.toString());
-          setPicLoading(false);
+        //  setPicLoading(false);
         })
         .catch((err) => {
           console.log(err);
-          setPicLoading(false);
+         // setPicLoading(false);
         });
     } else {
       toast({
@@ -124,10 +127,10 @@ const Signup = () => {
         isClosable: true,
         position: "bottom",
       });
-      setPicLoading(false);
+     // setPicLoading(false);
       return;
     }
-  };
+  };*/
 
   return (
     <VStack spacing="5px">
@@ -190,7 +193,7 @@ const Signup = () => {
         width="100%"
         style={{ marginTop: 15 }}
         onClick={submitHandler}
-        isLoading={picLoading}
+      //  isLoading={picLoading}
       >
         Sign Up
       </Button>

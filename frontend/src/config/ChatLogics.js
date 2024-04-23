@@ -1,3 +1,6 @@
+//import { useEffect, useState } from "react";
+
+
 export const isSameSenderMargin = (messages, m, i, userId) => {
   // console.log(i === messages.length - 1);
 
@@ -39,7 +42,11 @@ export const isSameUser = (messages, m, i) => {
 };
 
 export const getSender = (loggedUser, users) => {
-    if(loggedUser.name=="IT" || loggedUser.name=="CSE" || loggedUser.name=="ECE" || loggedUser.name=="EEE")
+//const [loggedUser, setLoggedUser] = useState();
+if(loggedUser === undefined) {return}
+
+
+    if(loggedUser.name==="IT" || loggedUser.name==="CSE" || loggedUser.name==="ECE" || loggedUser.name==="EEE")
     {
         let x = Math.random();
        // return x;

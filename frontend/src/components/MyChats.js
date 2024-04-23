@@ -5,7 +5,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { getSender } from "../config/ChatLogics";
 import ChatLoading from "./ChatLoading";
-import GroupChatModal from "./miscellaneous/GroupChatModal";
+//import GroupChatModal from "./miscellaneous/GroupChatModal";
 import { Button } from "@chakra-ui/react";
 import { ChatState } from "../Context/ChatProvider";
 
@@ -46,6 +46,8 @@ const MyChats = ({ fetchAgain }) => {
   }, [fetchAgain]);
 
   return (
+    //if(loggedUser === undefined) {return}
+
     <Box
       d={{ base: selectedChat ? "none" : "flex", md: "flex" }}
       flexDir="column"
@@ -66,7 +68,7 @@ const MyChats = ({ fetchAgain }) => {
         justifyContent="space-between"
         alignItems="center"
       >
-        My Chats
+        Complaints
         {/*<GroupChatModal>
           <Button
             d="flex"
@@ -106,9 +108,10 @@ const MyChats = ({ fetchAgain }) => {
                     {getSender(loggedUser, chat.users)}
                 {/*wrong    : chat.chatName}*/}
                 </Text>
+
                 {chat.latestMessage && (
                   <Text fontSize="xs">
-                    <b>{chat.latestMessage.sender.name} : </b>
+                    {/*<b>{chat.latestMessage.sender.name} : </b>*/}
                     {chat.latestMessage.content.length > 50
                       ? chat.latestMessage.content.substring(0, 51) + "..."
                       : chat.latestMessage.content}

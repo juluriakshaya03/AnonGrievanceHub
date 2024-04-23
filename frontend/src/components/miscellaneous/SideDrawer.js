@@ -20,7 +20,7 @@ import { Tooltip } from "@chakra-ui/tooltip";
 import { BellIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { Avatar } from "@chakra-ui/avatar";
 import { useHistory } from "react-router-dom";
-import { useState } from "react";
+import { useEffect,useState } from "react";
 import axios from "axios";
 import { useToast } from "@chakra-ui/toast";
 import ChatLoading from "../ChatLoading";
@@ -37,6 +37,7 @@ function SideDrawer() {
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingChat, setLoadingChat] = useState(false);
+  const [loggedUser, setLoggedUser] = useState();
 
   const {
     setSelectedChat,
@@ -50,6 +51,10 @@ function SideDrawer() {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const history = useHistory();
+
+   useEffect(() => {
+  setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
+   });
 
   const logoutHandler = () => {
     localStorage.removeItem("userInfo");
@@ -76,11 +81,20 @@ function SideDrawer() {
           Authorization: `Bearer ${user.token}`,
         },
       };
+     // if(loggedUser.name!=="IT" && loggedUser.name!=="CSE" && loggedUser.name!=="EEE" && loggedUser.name!=="ECE")
+    //  {
 
       const { data } = await axios.get(`/api/user?search=${search}`, config);
+      
 
       setLoading(false);
       setSearchResult(data);
+    //  }
+     // else{
+      //  setLoading(false);
+     //   setSearchResult(null);
+     // }
+
     } catch (error) {
       toast({
         title: "Error Occured!",
@@ -125,7 +139,7 @@ function SideDrawer() {
   return (
     <>
       <Box
-        d="flex"
+        display="flex"
         justifyContent="space-between"
         alignItems="center"
         bg="white"
@@ -133,14 +147,21 @@ function SideDrawer() {
         p="5px 10px 5px 10px"
         borderWidth="5px"
       >
-        <Tooltip label="Search Users to chat" hasArrow placement="bottom-end">
+      {(loggedUser === undefined)? (
+          <Text d={{ base: "none", md: "flex" }} px={4}>
+              
+            </Text>
+      ):((loggedUser.name!=="IT" && loggedUser.name!=="CSE" && loggedUser.name!=="EEE" && loggedUser.name!=="ECE")?
+       
+        (  <Tooltip label="Search Department/Student" hasArrow placement="bottom-end">
           <Button variant="ghost" onClick={onOpen}>
             <i className="fas fa-search"></i>
             <Text d={{ base: "none", md: "flex" }} px={4}>
-              Search User
+              Search Department/Student
             </Text>
           </Button>
-        </Tooltip>
+        </Tooltip>  ):(loggedUser.name+" Department"))
+      }
         <Text fontSize="2xl" fontFamily="Work sans">
           Student Grievance Redressal
         </Text>
@@ -193,7 +214,7 @@ function SideDrawer() {
       <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerHeader borderBottomWidth="1px">Search Users</DrawerHeader>
+          <DrawerHeader borderBottomWidth="1px">Search Department/Student</DrawerHeader>
           <DrawerBody>
             <Box d="flex" pb={2}>
               <Input

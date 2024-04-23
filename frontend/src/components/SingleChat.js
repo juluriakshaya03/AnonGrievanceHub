@@ -13,7 +13,7 @@ import Lottie from "react-lottie";
 import animationData from "../animations/typing.json";
 
 import io from "socket.io-client";
-import UpdateGroupChatModal from "./miscellaneous/UpdateGroupChatModal";
+//import UpdateGroupChatModal from "./miscellaneous/UpdateGroupChatModal";
 import { ChatState } from "../Context/ChatProvider";
 const ENDPOINT = "http://localhost:5000"; // "https://talk-a-tive.herokuapp.com"; -> After deployment
 var socket, selectedChatCompare;
@@ -81,14 +81,17 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           },
         };
         setNewMessage("");
+       // console.log('hi');
         const { data } = await axios.post(
           "/api/message",
           {
             content: newMessage,
-            chatId: selectedChat,
+            chatId: selectedChat._id,
           },
           config
         );
+       // console.log(data);
+      //  setNewMessage("");
         socket.emit("new message", data);
         setMessages([...messages, data]);
       } catch (error) {
@@ -198,7 +201,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             }
           </Text>
           <Box
-            d="flex"
+            display="flex"
             flexDir="column"
             justifyContent="flex-end"
             p={3}
@@ -252,9 +255,9 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         </>
       ) : (
         // to get socket.io on same page
-        <Box d="flex" alignItems="center" justifyContent="center" h="100%">
+        <Box display="flex" alignItems="center" justifyContent="center" h="100%">
           <Text fontSize="3xl" pb={3} fontFamily="Work sans">
-            Click on a user to start chatting
+            Click on a complaints section for viewing or raising complaints.
           </Text>
         </Box>
       )}

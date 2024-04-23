@@ -39,7 +39,7 @@ const Login = () => {
           "Content-type": "application/json",
         },
       };
-
+  console.log(config);
       const { data } = await axios.post(
         "/api/user/login",
         { email, password },
@@ -75,7 +75,7 @@ const Login = () => {
       <FormControl id="email" isRequired>
         <FormLabel>Email Address</FormLabel>
         <Input
-          value={email}
+         // value={email}
           type="email"
           placeholder="Enter Your Email Address"
           onChange={(e) => setEmail(e.target.value)}
@@ -85,7 +85,7 @@ const Login = () => {
         <FormLabel>Password</FormLabel>
         <InputGroup size="md">
           <Input
-            value={password}
+            //value={password}
             onChange={(e) => setPassword(e.target.value)}
             type={show ? "text" : "password"}
             placeholder="Enter password"
@@ -102,7 +102,7 @@ const Login = () => {
         width="100%"
         style={{ marginTop: 15 }}
         onClick={submitHandler}
-       // isLoading={loading}
+        isLoading={loading}
       >
         Login
       </Button>
