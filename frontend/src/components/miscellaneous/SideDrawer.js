@@ -30,11 +30,13 @@ import ProfileModal from "./ProfileModal";
 //import { Effect } from "react-notification-badge";
 import { getSender } from "../../config/ChatLogics";
 import UserListItem from "../userAvatar/UserListItem";
+import ComplaintListItem from "../userAvatar/ComplaintListItem";
 import { ChatState } from "../../Context/ChatProvider";
 
 function SideDrawer() {
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
+  const [searchResult2, setSearchResult2] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingChat, setLoadingChat] = useState(false);
   const [loggedUser, setLoggedUser] = useState();
@@ -59,6 +61,10 @@ function SideDrawer() {
   const logoutHandler = () => {
     localStorage.removeItem("userInfo");
     history.push("/");
+  };
+
+  const postComplaints = () => {
+       history.push("/complaintForm");
   };
 
   const handleSearch = async () => {
@@ -89,6 +95,53 @@ function SideDrawer() {
 
       setLoading(false);
       setSearchResult(data);
+    //  }
+     // else{
+      //  setLoading(false);
+     //   setSearchResult(null);
+     // }
+
+    } catch (error) {
+      toast({
+        title: "Error Occured!",
+        description: "Failed to Load the Search Results",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom-left",
+      });
+    }
+  };
+
+
+ const handleSearchComplaint = async () => {
+    if (!search) {
+      toast({
+        title: "Please Enter something in search",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "top-left",
+      });
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+     // if(loggedUser.name!=="IT" && loggedUser.name!=="CSE" && loggedUser.name!=="EEE" && loggedUser.name!=="ECE")
+    //  {
+
+      const { data } = await axios.get(`/api/complaint?search=${search}`, config);
+      
+
+      setLoading(false);
+      setSearchResult2(data);
     //  }
      // else{
       //  setLoading(false);
@@ -162,9 +215,43 @@ function SideDrawer() {
           </Button>
         </Tooltip>  ):(loggedUser.name+" Department"))
       }
+
+       
+       {(loggedUser === undefined)? (
+          <Text d={{ base: "none", md: "flex" }} px={4}>
+              
+            </Text>
+      ):((loggedUser.name!=="IT" && loggedUser.name!=="CSE" && loggedUser.name!=="EEE" && loggedUser.name!=="ECE")?
+       
+        (  <Tooltip label="Search complaint" hasArrow placement="bottom-end">
+          <Button variant="ghost" onClick={onOpen}>
+            <i className="fas fa-search"></i>
+            <Text d={{ base: "none", md: "flex" }} px={4}>
+              Search complaint
+            </Text>
+          </Button>
+        </Tooltip>  ):(" "))
+      }
+     
+
         <Text fontSize="2xl" fontFamily="Work sans">
           Student Grievance Redressal
         </Text>
+      {(loggedUser === undefined)? (
+          <Text d={{ base: "none", md: "flex" }} px={4}>
+              
+            </Text>
+      ):((loggedUser.name!=="IT" && loggedUser.name!=="CSE" && loggedUser.name!=="EEE" && loggedUser.name!=="ECE")?
+       
+       ( <Tooltip label="Post Resolved Complaints" hasArrow placement="bottom-end">
+          <Button variant="ghost" onClick={postComplaints}>
+            <Text d={{ base: "none", md: "flex" }} px={4}>
+              Post Resolved Complaints
+            </Text>
+          </Button>
+        </Tooltip>   ):(" "))
+      }
+
         <div>
           <Menu>
             <MenuButton p={1}>
@@ -214,13 +301,13 @@ function SideDrawer() {
       <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerHeader borderBottomWidth="1px">Search Department/Student</DrawerHeader>
+          <DrawerHeader borderBottomWidth="1px">Search Dept/Student/Complaint</DrawerHeader>
           <DrawerBody>
-            <Box d="flex" pb={2}>
+            <Box display="flex" pb={2}>
               <Input
-                placeholder="Search by name or email"
+                placeholder="Search by name/email"
                 mr={2}
-                value={search}
+                //value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
               <Button onClick={handleSearch}>Go</Button>
@@ -236,10 +323,35 @@ function SideDrawer() {
                 />
               ))
             )}
-            {loadingChat && <Spinner ml="auto" d="flex" />}
+            {loadingChat && <Spinner ml="auto" display="flex" />}
+
+            <Box display="flex" pb={2}>
+              <Input
+                placeholder="Search complaint"
+                mr={2}
+                //value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              <Button onClick={handleSearchComplaint}>Go</Button>
+            </Box>
+            {loading ? (
+              <ChatLoading />
+            ) : (
+              searchResult2?.map((user) => (
+                <ComplaintListItem
+                  //key={user._id}
+                  user={user}
+                 // handleFunction={() => accessChat(user._id)}
+                />
+              ))
+            )}
+            {loadingChat && <Spinner ml="auto" display="flex" />}
+
           </DrawerBody>
         </DrawerContent>
       </Drawer>
+
+
     </>
   );
 }

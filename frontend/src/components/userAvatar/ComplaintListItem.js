@@ -1,13 +1,11 @@
-import { Avatar } from "@chakra-ui/avatar";
 import { Box, Text } from "@chakra-ui/layout";
-import { ChatState } from "../../Context/ChatProvider";
 
-const UserListItem = ({ user, handleFunction }) => {
+const ComplaintListItem = ({ user }) => {
   //const { user } = ChatState();
 
   return (
     <Box
-      onClick={handleFunction}
+    //  onClick={handleFunction}
       cursor="pointer"
       bg="#E8E8E8"
       _hover={{
@@ -23,22 +21,21 @@ const UserListItem = ({ user, handleFunction }) => {
       mb={2}
       borderRadius="lg"
     >
-      <Avatar
+      {/*<Avatar
         mr={2}
         size="sm"
         cursor="pointer"
         name={user.name}
         src={user.pic}
-      />
+      />*/}
       <Box>
-        <Text>{user.name}</Text>
-        <Text fontSize="xs">
-          <b>Email : </b>
-          {user.email}
-        </Text>
+        <Text>Complaint: {user.complaint}</Text>
+        <Text>Solution: {user.solution}</Text>
+        <Text>Dept: {user.dept}</Text>
+        <Text>Date: {user.date}</Text>
       </Box>
     </Box>
   );
 };
 
-export default UserListItem;
+export default ComplaintListItem;
