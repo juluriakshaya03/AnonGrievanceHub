@@ -48,7 +48,7 @@ if(loggedUser === undefined) {return}
 
     if(loggedUser.name==="IT" || loggedUser.name==="CSE" || loggedUser.name==="ECE" || loggedUser.name==="EEE")
     {
-        let x = Math.random();
+        //let x = Math.random();
        // return x;
        return users[0]?._id === loggedUser?._id ? users[1]?._id : users[0]?._id;
     }
